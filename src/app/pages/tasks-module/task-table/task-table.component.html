@@ -1,0 +1,112 @@
+<div class="container">
+  <div class="d-flex align-items-center justify-content-between">
+    <div>
+      <h1>Tasks</h1>
+      <p>Track what needs doing, what is underway, and what is slipping.</p>
+    </div>
+
+    <div>
+      <button routerLink="/tasks/new" class="btn btn-success text-white d-flex align-items-center gap-2">
+        <ion-icon name="add-outline"></ion-icon>
+        New task
+      </button>
+    </div>
+  </div>
+
+  <ion-card class="m-0 mb-3" >
+    <ion-card-content>
+      <form [formGroup]="form">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8">
+              <ion-label>Search By Title</ion-label>
+              <ion-input fill="outline" placeholder="Search task" formControlName="title" (ionInput)="filter()">
+                <ion-icon name="search-outline" slot="start"></ion-icon>
+              </ion-input>
+            </ion-col>
+            <ion-col size="2">
+              <ion-label>Status</ion-label>
+              <ion-select fill="outline" placeholder="Select task Status" interface="popover"
+                [interfaceOptions]="customPopoverOptions" formControlName="status" (ionChange)="filter()">
+                @for (option of statusDropdown ; track option) {
+                <ion-select-option [value]="option.value">
+                  {{option.name}}
+                </ion-select-option>
+                }
+              </ion-select>
+            </ion-col>
+            <ion-col size="2">
+              <ion-label>Priority</ion-label>
+              <ion-select fill="outline" interface="popover" placeholder="Select task Priority"
+                [interfaceOptions]="customPopoverOptions" formControlName="priority"  (ionChange)="filter()">
+                @for (option of priorityDropdown ; track option) {
+                <ion-select-option [value]="option.value">
+                  {{option.name}}
+                </ion-select-option>
+                }
+              </ion-select>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="m-0">
+    <ion-card-content>
+      <div class="table-responsive" *ngIf="task_list.length > 0; else errorMsg">
+        <table class="table table-border">
+          <thead>
+            <tr>
+              <th>Sr.No.</th>
+              <th>TASK</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Due date</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of task_list; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{data.title}}</td>
+              <td>
+                <small class="status" [ngClass]="{
+                    'completed': data.status_id == 1,
+                    'progress': data.status_id == 0, 
+                    'to_do': data.status_id == -1, 
+                  }">{{data.status}}</small>
+              </td>
+              <td class="d-flex align-items-center gap-2">
+                <div class="dot" [ngClass]="{
+                      'low': data.priority_id == -1,
+                      'medium': data.priority_id == 1,
+                      'high': data.priority_id == 2
+                    }"></div>
+                <span>{{data.priority}}</span>
+              </td>
+              <td [ngClass]="{'text-danger': validateAndFormatDate(data.due_date, 1)}">{{validateAndFormatDate(data.due_date)}}</td>
+              <td>
+                <ion-icon name="create-outline" (click)="edit(data)"></ion-icon>
+                <ion-icon name="trash-outline" (click)="onDelete(data.id)"></ion-icon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #errorMsg>
+        <div class="text-center">
+          <h1 class="text-dark">No tasks yet</h1>
+          <p class="my-2 text-dark">Create your first task to get started.</p>
+          <div class="d-flex justify-content-center">
+            <button routerLink="/tasks/new" class="btn btn-success text-white d-flex align-items-center gap-2">
+              <ion-icon name="add-outline"></ion-icon>
+              New task
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+</div>

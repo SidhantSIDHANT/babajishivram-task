@@ -1,0 +1,36 @@
+<div class="navbar">
+<div class="container">
+    <ul class="d-flex align-items-center gap-2 p-0 py-1 m-0">
+      <li>
+        <button 
+            class="btn" 
+            (click)="selectedBtn = 0" 
+            [ngClass]="{'active': selectedBtn == 0}"
+            routerLink="tasks/"
+            >
+          Dashboard
+        </button>
+      </li>
+      <li>
+        <button 
+            class="btn" 
+            (click)="selectedBtn = 1"
+            [ngClass]="{'active': selectedBtn == 1}"
+            routerLink="tasks/table"
+            >
+          Tasks
+        </button>
+      </li>
+      <li>
+        <button 
+          class="btn" 
+          (click)="selectedBtn = 2" 
+          [ngClass]="{'active': selectedBtn == 2}"
+          routerLink="tasks/new"
+          >
+          New Task
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="d-flex align-items-center justify-content-between">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Track your tasks, monitor progress, and stay on top of your deadlines.</p>
+    </div>
+
+    <div>
+      <button routerLink="/tasks/table" class="btn btn-success text-white d-flex align-items-center gap-2">
+        <ion-icon name="add-outline"></ion-icon>
+        Show Task
+      </button>
+    </div>
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="3" *ngFor="let card of dashboardDetails">
+        <ion-card class="m-0">
+          <ion-card-content>
+            <small class="text-{{card.class}}">{{card.name}}</small>
+            <h1 class="fw-bold text-{{card.class}}">{{card.count}}</h1>
+            <p class="text-{{card.class}}">{{card.text}}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

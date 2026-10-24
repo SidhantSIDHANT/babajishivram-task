@@ -1,0 +1,110 @@
+<div class="container">
+
+  <ion-card>
+    <ion-card-content class="p-4">
+      <div class="card-headding d-flex justify-content-between align-items-center p-1">
+        <div>
+          <h1 class="text-dark fw-bold">New task</h1>
+          <p>Fill in the details to add a task.</p>
+        </div>
+
+        <div>
+          <button class="btn btn-light text-dark ">Back To Tasks</button>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="add()">
+        <ion-grid class="p-0">
+          <ion-row class="p-0">
+            <ion-col size="12">
+              <ion-label [ngClass]="{'text-danger': validationControl('title')}">Title <sup
+                  class="text-danger">*</sup></ion-label>
+              <ion-input [ngClass]="{'form-submit invalid': validationControl('title')}" fill="outline"
+                placeholder="Enter task title" formControlName="title"></ion-input>
+
+              @if(form.controls['title'].hasError('minlength')) {
+              <div class="text-danger">
+                Title must contain at least 3 characters.
+              </div>
+              }
+              @else if(validationControl('title')) {
+              <div class="text-danger">
+                Title is required.
+              </div>
+              }
+              <!-- <div *ngIf=" validationControl('title')"> </div> -->
+            </ion-col>
+
+            <ion-col size="12" size-md="6">
+              <ion-label [ngClass]="{'text-danger': validationControl('status')}">Status <sup
+                  class="text-danger">*</sup></ion-label>
+              <ion-select fill="outline" placeholder="Select task Status" interface="popover"
+                [interfaceOptions]="customPopoverOptions" formControlName="status"
+                [ngClass]="{'form-submit invalid': validationControl('status')}">
+                @for (option of statusDropdown ; track option) {
+                <ion-select-option  [value]="option.value">
+                  {{option.name}}
+                </ion-select-option>
+                }
+              </ion-select>
+
+              @if(validationControl('status')) {
+              <div class="text-danger">
+                Status is required.
+              </div>
+              }
+            </ion-col>
+
+            <ion-col size="12" size-md="6">
+              <ion-label>Priority <sup class="text-danger">*</sup></ion-label>
+              <ion-select fill="outline" interface="popover" placeholder="Select task Priority"
+                [interfaceOptions]="customPopoverOptions" formControlName="priority"
+                [ngClass]="{'form-submit invalid': validationControl('priority')}">
+                @for (option of priorityDropdown; track option) {
+                <ion-select-option [value]="option.value"> 
+                  {{option.name}}
+                </ion-select-option>
+                }
+              </ion-select>
+
+              @if(validationControl('priority')) {
+              <div class="text-danger">
+                Priority is required.
+              </div>
+              }
+            </ion-col>
+
+            <ion-col size="12">
+              <mat-label [ngClass]="{'text-danger': validationControl('due_date')}">Due date <sup
+                  class="text-danger">*</sup></mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput [ngClass]="{'form-submit invalid': validationControl('due_date')}" [matDatepicker]="dp"
+                  placeholder="Select Date" formControlName="due_date">
+                <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker #dp></mat-datepicker>
+              </mat-form-field>
+
+              @if(validationControl('due_date')) {
+              <div class="text-danger">
+                Priority is required.
+              </div>
+              }
+            </ion-col>
+
+             <ion-col size="12">
+              <ion-label>Description(optional) </ion-label>
+              <ion-textarea fill="outline" placeholder="Enter task Description" rows="4"
+                formControlName="description"></ion-textarea>
+            </ion-col>
+
+            <ion-col size="12" class="text-end">
+              <button type="button" class="btn btn-light text-dark me-2">Cancel</button>
+              <button *ngIf="!isEditMode" type="submit" class="btn btn-success text-white">Create Task</button>
+              <button *ngIf="isEditMode" (click)="add(2)" type="button" class="btn btn-success text-white">Update</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</div>
